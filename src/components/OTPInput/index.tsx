@@ -4,17 +4,16 @@
 import React, { memo, useState, useCallback, CSSProperties } from "react";
 import SingleInput from "./SingleInput";
 
-export interface OTPInputProps
-  extends Pick<
-    React.HtmlHTMLAttributes<HTMLDivElement>,
-    "style" | "className"
-  > {
+export interface OTPInputProps {
   length: number;
-
   onChangeOTP: (otp: string) => any;
+
   autoFocus?: boolean;
   isNumberInput?: boolean;
   disabled?: boolean;
+
+  style?: CSSProperties;
+  className?: string;
 
   inputStyle?: CSSProperties;
   inputClassName?: string;
@@ -31,8 +30,8 @@ export function OTPInputComponent(props: OTPInputProps) {
     inputStyle,
     ...rest
   } = props;
-  const [activeInput, setActiveInput] = useState(0);
 
+  const [activeInput, setActiveInput] = useState(0);
   const [otpValues, setOTPValues] = useState(Array<string>(length).fill(""));
 
   // Helper to return OTP from inputs
@@ -167,17 +166,19 @@ export function OTPInputComponent(props: OTPInputProps) {
         .slice(0, length - activeInput)
         .split("");
       if (pastedData) {
+        let nextFocusIndex = 0;
         const updatedOTPValues = [...otpValues];
         updatedOTPValues.forEach((val, index) => {
           if (index >= activeInput) {
             const changedValue = getRightValue(pastedData.shift() || val);
             if (changedValue) {
               updatedOTPValues[index] = changedValue;
+              nextFocusIndex = index;
             }
           }
         });
         setOTPValues(updatedOTPValues);
-        setActiveInput(length - 1);
+        setActiveInput(Math.min(nextFocusIndex + 1, length - 1));
       }
     },
     [activeInput, getRightValue, length, otpValues]
