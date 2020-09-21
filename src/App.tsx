@@ -7,16 +7,14 @@ const App: React.FC = () => {
     <div className="App">
       - Number OTP:
       <OTPInput
+        isNumberInput
         length={4}
         className="otpContainer"
         inputClassName="otpInput"
-        isNumberInput
-        autoFocus
         onChangeOTP={otp => console.log("Number OTP: ", otp)}
       />
       - String OTP:
       <OTPInput
-        autoFocus
         length={4}
         className="otpContainer"
         inputClassName="otpInput"
