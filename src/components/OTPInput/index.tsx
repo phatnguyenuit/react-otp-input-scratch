@@ -179,6 +179,7 @@ export function OTPInputComponent(props: OTPInputProps) {
         .map((_, index) => (
           <SingleInput
             key={`SingleInput-${index}`}
+            type={isNumberInput ? 'number': 'text'}
             focus={activeInput === index}
             value={otpValues && otpValues[index]}
             autoFocus={autoFocus}
