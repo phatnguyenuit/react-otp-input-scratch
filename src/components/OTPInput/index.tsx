@@ -47,10 +47,12 @@ export function OTPInputComponent(props: OTPInputProps) {
   const getRightValue = useCallback(
     (str: string) => {
       let changedValue = str;
-      if (!isNumberInput) {
+
+      if (!isNumberInput || !changedValue) {
         return changedValue;
       }
-      return !changedValue || /\d/.test(changedValue) ? changedValue : '';
+
+      return Number(changedValue) >= 0 ? changedValue : '';
     },
     [isNumberInput],
   );
@@ -113,7 +115,9 @@ export function OTPInputComponent(props: OTPInputProps) {
   // Handle onKeyDown input
   const handleOnKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      switch (e.key) {
+      const pressedKey = e.key;
+
+      switch (pressedKey) {
         case 'Backspace':
         case 'Delete': {
           e.preventDefault();
@@ -134,12 +138,13 @@ export function OTPInputComponent(props: OTPInputProps) {
           focusNextInput();
           break;
         }
-        case ' ': {
-          e.preventDefault();
+        default: {
+          if (pressedKey.match(/^[^a-zA-Z0-9]$/)) {
+            e.preventDefault();
+          }
+
           break;
         }
-        default:
-          break;
       }
     },
     [activeInput, changeCodeAtFocus, focusNextInput, focusPrevInput, otpValues],
@@ -179,7 +184,7 @@ export function OTPInputComponent(props: OTPInputProps) {
         .map((_, index) => (
           <SingleInput
             key={`SingleInput-${index}`}
-            type={isNumberInput ? 'number': 'text'}
+            type={isNumberInput ? 'number' : 'text'}
             focus={activeInput === index}
             value={otpValues && otpValues[index]}
             autoFocus={autoFocus}
