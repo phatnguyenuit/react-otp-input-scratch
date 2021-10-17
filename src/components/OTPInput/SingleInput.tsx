@@ -7,10 +7,14 @@ export interface SingleOTPInputProps
   focus?: boolean;
 }
 
-export function SingleOTPInputComponent(props: SingleOTPInputProps) {
-  const { focus, autoFocus, ...rest } = props;
+export function SingleOTPInputComponent({
+  focus,
+  autoFocus,
+  ...props
+}: SingleOTPInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const prevFocus = usePrevious(!!focus);
+
   useLayoutEffect(() => {
     if (inputRef.current) {
       if (focus && autoFocus) {
@@ -23,7 +27,7 @@ export function SingleOTPInputComponent(props: SingleOTPInputProps) {
     }
   }, [autoFocus, focus, prevFocus]);
 
-  return <input ref={inputRef} {...rest} />;
+  return <input ref={inputRef} {...props} />;
 }
 
 const SingleOTPInput = memo(SingleOTPInputComponent);

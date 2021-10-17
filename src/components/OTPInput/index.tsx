@@ -105,7 +105,7 @@ export function OTPInputComponent(props: OTPInputProps) {
     [changeCodeAtFocus, focusNextInput, getRightValue],
   );
 
-  // Hanlde onBlur input
+  // Handle onBlur input
   const onBlur = useCallback(() => {
     setActiveInput(-1);
   }, []);
