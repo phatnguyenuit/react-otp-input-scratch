@@ -172,6 +172,7 @@ export function OTPInputComponent(props: OTPInputProps) {
         });
         setOTPValues(updatedOTPValues);
         setActiveInput(Math.min(nextFocusIndex + 1, length - 1));
+        handleOtpChange(updatedOTPValues);
       }
     },
     [activeInput, getRightValue, length, otpValues],
